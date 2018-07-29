@@ -1,5 +1,7 @@
 from pandas import Series, DataFrame, Index
 import numpy as np
+from numpy import nan as NA
+
 obj = Series(range(3), index=['a', 'b', 'c'])
 print(obj)
 index = obj.index
@@ -44,5 +46,48 @@ print(obj3)
 obj3 = obj3.reindex(range(6), method='bfill')  # 或者pad
 print(obj3)  # 向后值填充
 
+# 成员资格方法
+data = DataFrame({'qu1': [1, 3, 4, 3, 4], 'qu2': [2, 3, 1, 2, 3], 'qu3': [1, 5, 2, 4, 4]})
+print(data)
 
+# 处理缺失数据
+string = Series(['aar', 'art', np.nan, 'avo'])
+print(string)
+print(string.isnull())
+
+# 过滤掉缺失数据
+data = Series([1, NA, 3.5, NA, 7])
+print(data.dropna())  # 过滤掉NA
+print(data.notnull())
+
+data = DataFrame([[1, 6.5, 3], [1, NA, NA], [NA, NA, NA], [NA, 6.5, 3]])
+print(data)
+print(data.dropna())   # 丢弃掉含有NA的所有行
+print(data.dropna(how='all'))  # 丢我掉全为NA的行
+data[4] = NA
+print(data)
+print(data.dropna(axis=1, how='all'))   # 丢弃掉全为NA的列
+
+df = DataFrame(np.random.randn(7, 3))
+df.ix[:4, 1] = NA  # 要钱也要后
+df.ix[:2, 2] = NA
+print(df)
+print(df.dropna(thresh=3))  # thresh对应的值是观测的数据个数
+
+# 填充缺失数据
+print(df.fillna(0))
+print(df.fillna({1: 0.4}))  # 指定的列进行填充
+_ = df.fillna(0, inplace=True)  # 本地填充修改， 不产生新对象
+print(df)
+
+df = DataFrame(np.random.randn(6, 3))
+df.ix[2:, 1] = NA  # 要钱也要后
+df.ix[4:, 2] = NA
+print(df)
+print(df.fillna(method='ffill'))  # 向前填充
+print(df.fillna(method='ffill', limit=2))  # 填充限制
+
+data = Series([1, NA, 3.5, NA, 7])
+print(data)
+print(data.fillna(data.mean()))  # 用平均值填充na值
 
