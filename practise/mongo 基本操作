@@ -1,0 +1,43 @@
+mongodb 基本操作
+
+创建数据库      use 数据库名
+查看数据库      show dbs
+统计数据库信息   db.stats()
+删除当前数据库   db.dropDatabase()
+查看当前数据库下的集合名称  db.getCollectionNames()
+查看数据库用户角色权限   show roles
+
+基操
+插入文档     db.collection.insert({文档})  db库名  collection 集合名
+            goodsdb.goodsbaseinfo.insert([{文档1}, {文档2}, {文档3}])， 用中括号实现多条插入
+            db.collection.insertOne({文档})  db库名  collection 集合名
+            goodsdb.goodsbaseinfo.insertMany([{文档1}, {文档2}, {文档3}])， 用中括号实现多条插入  减少出错率
+查询文档     db.collection.find(query查询条件， projection指定返回的字段 比如 {name：1， id：0}返回name不返回id)
+            query：  {$exists: true}  查找的值存在
+            db.collection.find().limit(1)  返回第一条数据
+            db.collection.find().skip(2)  返回第三条开始的文档记录
+            {<key>:{$lt:<value>}} 小于 where price < 15
+            小于等于  $lte    大于 $gt    大于等于 $gte     不等于 $ne
+            {$or: [{条件1}, {条件2}] }  满足任意一条件就可以  用的较多吧    还有正则 自己看书吧
+更新文档      db.collection.update(<query>, <update>, {upsert: <boolean>, multi: <boolean>,
+             writeConcern: <document>, collation: <document>})
+             upsert 不存在query， 是否插入新的，默认false
+             multi  false 只更新第一条， true 全部符合的更新
+             {$set: {更新后的文档}}  {$inc: {amount: 4}} 加法运算  {$mul: {amount: 4}} 乘法运算
+             {$rename: {"titles": "title"}}  修改键名   {$unset: {"unit": "元"}}  删除字段
+             {$min: {amount: 5}}  给定的值与当前文档进行比较  谁小谁被留下来
+             {$max: {amount: 5}}  给定的值与当前文档进行比较  谁大谁被留下来
+             {lasttime: ISODate('time')}   更新当前文档时间字段的值
+
+
+
+
+
+
+
+
+
+
+
+
+
